@@ -1,0 +1,42 @@
+#include <IRremote.hpp>
+IRrecv irrecv(2);
+decode_results sonuclar;
+
+#define red 9
+#define yellow 3
+#define blue 11
+
+void setup()
+{
+Serial.begin(9600);
+irrecv.enableIRIn();
+pinMode(red,OUTPUT);
+pinMode(yellow,OUTPUT);
+}
+
+void loop()
+{
+  if (irrecv.decode(&sonuclar))
+  {
+        // put your main code here, to run repeatedly:
+      Serial.println(sonuclar.value,HEX);
+      if(sonuclar.value==0xFFA25D)
+      {
+          digitalWrite(red,1);
+      }
+      if(sonuclar.value==0xFF22DD)
+      {
+        digitalWrite(red,0);
+      }
+      if(sonuclar.value==0xFF629D)
+      {
+          digitalWrite(yellow,1); 
+       }
+      if(sonuclar.value==0xFF02FD)
+      {
+        digitalWrite(yellow,0);
+      }
+      irrecv.resume();
+     
+  } delay(100);
+}
